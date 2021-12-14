@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Trabajo" Class="DCDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=PC97\SQLEXPRESS;Initial Catalog=Trabajo;User ID=tig1" SettingsObjectName="CapaDatos.Properties.Settings" SettingsPropertyName="TrabajoConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Cliente" Member="eCliente">
+    <Type Name="eCliente">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nombre" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="apellido" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="fkDoc" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="numdoc" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Cliente_Venta" Member="eVenta" Storage="_Venta" ThisKey="id" OtherKey="fkCliente" Type="eVenta" />
+      <Association Name="TipoDocumento_Cliente" Member="eTipoDocumento" Storage="_TipoDocumento" ThisKey="fkDoc" OtherKey="id" Type="eTipoDocumento" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Compra" Member="eCompra">
+    <Type Name="eCompra">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="fkProvee" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="fecha" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="total" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Association Name="Compra_Detalle_Compra" Member="eDetalle_Compra" Storage="_Detalle_Compra" ThisKey="id" OtherKey="fkCompra" Type="eDetalle_Compra" />
+      <Association Name="Proveedor_Compra" Member="eProveedor" Storage="_Proveedor" ThisKey="fkProvee" OtherKey="id" Type="eProveedor" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Producto" Member="eProducto">
+    <Type Name="eProducto">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nombre" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="precio" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="fkTipo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="fkmarca" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Producto_Detalle_Compra" Member="eDetalle_Compra" Storage="_Detalle_Compra" ThisKey="id" OtherKey="fkProducto" Type="eDetalle_Compra" />
+      <Association Name="Producto_Detalle_Venta" Member="eDetalle_Venta" Storage="_Detalle_Venta" ThisKey="id" OtherKey="fkProducto" Type="eDetalle_Venta" />
+      <Association Name="Marca_Producto" Member="eMarca" Storage="_Marca" ThisKey="fkmarca" OtherKey="id" Type="eMarca" IsForeignKey="true" />
+      <Association Name="TipoProducto_Producto" Member="eTipoProducto" Storage="_TipoProducto" ThisKey="fkTipo" OtherKey="id" Type="eTipoProducto" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TipoDocumento" Member="eTipoDocumento">
+    <Type Name="eTipoDocumento">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nombre" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="TipoDocumento_Cliente" Member="eCliente" Storage="_Cliente" ThisKey="id" OtherKey="fkDoc" Type="eCliente" />
+      <Association Name="TipoDocumento_Proveedor" Member="eProveedor" Storage="_Proveedor" ThisKey="id" OtherKey="fkDoc" Type="eProveedor" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Detalle_Compra" Member="eDetalle_Compra">
+    <Type Name="eDetalle_Compra">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="fkCompra" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="fkProducto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="cantidad" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="precioUni" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Association Name="Compra_Detalle_Compra" Member="eCompra" Storage="_Compra" ThisKey="fkCompra" OtherKey="id" Type="eCompra" IsForeignKey="true" />
+      <Association Name="Producto_Detalle_Compra" Member="eProducto" Storage="_Producto" ThisKey="fkProducto" OtherKey="id" Type="eProducto" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Detalle_Venta" Member="eDetalle_Venta">
+    <Type Name="eDetalle_Venta">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="fkProducto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="fkVenta" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="cantidad" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="precioUni" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Association Name="Producto_Detalle_Venta" Member="eProducto" Storage="_Producto" ThisKey="fkProducto" OtherKey="id" Type="eProducto" IsForeignKey="true" />
+      <Association Name="Venta_Detalle_Venta" Member="eVenta" Storage="_Venta" ThisKey="fkVenta" OtherKey="id" Type="eVenta" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Marca" Member="eMarca">
+    <Type Name="eMarca">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nombre" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Marca_Producto" Member="eProducto" Storage="_Producto" ThisKey="id" OtherKey="fkmarca" Type="eProducto" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TipoProducto" Member="eTipoProducto">
+    <Type Name="eTipoProducto">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nombre" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="TipoProducto_Producto" Member="eProducto" Storage="_Producto" ThisKey="id" OtherKey="fkTipo" Type="eProducto" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Venta" Member="eVenta">
+    <Type Name="eVenta">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="fecha" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="total" Type="System.Double" DbType="Float NOT NULL" CanBeNull="false" />
+      <Column Name="fkCliente" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Venta_Detalle_Venta" Member="eDetalle_Venta" Storage="_Detalle_Venta" ThisKey="id" OtherKey="fkVenta" Type="eDetalle_Venta" />
+      <Association Name="Cliente_Venta" Member="eCliente" Storage="_Cliente" ThisKey="fkCliente" OtherKey="id" Type="eCliente" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Proveedor" Member="eProveedor">
+    <Type Name="eProveedor">
+      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="nombre" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="apellido" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="telefono" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="gmail" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="fkDoc" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="numDoc" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Proveedor_Compra" Member="eCompra" Storage="_Compra" ThisKey="id" OtherKey="fkProvee" Type="eCompra" />
+      <Association Name="TipoDocumento_Proveedor" Member="eTipoDocumento" Storage="_TipoDocumento" ThisKey="fkDoc" OtherKey="id" Type="eTipoDocumento" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
